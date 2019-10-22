@@ -2,33 +2,27 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"encoding/json"
 	"io/ioutil"
 	"math/rand"
+	"time"
 )
 
 type Planets struct {
-	Planets []Planet `json:"planets"`
+	Planets []Planet `json: "planets"`
 }
 
+
 type Planet struct {
-	name 		string `json:"name"`
-	description string `json:"description"`
+	Name string `json: "name"`
+	Description string `json: "description"`
 }
 
 func main() {
-	jsonFile, err := os.Open("planetarySystem.json")
+	file, _ := ioutil.ReadFile("planetarySystem.json")
+	data := Planets{}
 
-	if err != nil {
-		fmt.Println(err)	
-	}
-	fmt.Println("Opened planetarySystem.json!")
-
-	defer jsonFile.Close()
-	byteValue, _ := ioutil.ReadAll(jsonFile)
-	var planets Planets
-	json.Unmarshal(byteValue, &planets)
+	_ = json.Unmarshal([]byte(file), &data)
 
 	fmt.Println("Welcome to our quaint solar system!")
 	fmt.Println("There used to be 9 planets but now there are only 8...")
@@ -46,10 +40,11 @@ func main() {
 
 	for {
 		if randPlanet == "Y" {
-			var randInt = rand.Intn(len(planets.Planets))
+			rand.Seed(time.Now().UnixNano())
+			var randInt = rand.Intn(len(data.Planets))
 			fmt.Println(randInt)
-			fmt.Println("Name: " + planets.Planets[randInt].name)
-			fmt.Println("Desc: " + planets.Planets[randInt].description)
+			fmt.Println("Name: " + data.Planets[randInt].Name)
+			fmt.Println("Desc: " + data.Planets[randInt].Description)
 			break
 		} else if randPlanet == "N" {
 			break
@@ -68,15 +63,17 @@ func main() {
 		fmt.Println("Alright, then what planet would you like to hear about?")
 	}
 
-	//var planetInput string
-	//if planetInput not one of nine options {
-	//	Ask user to repeat themselves
-	//	fmt.Scanln(&planetInput)
-	//}
-
-	//if planetInput is one of nine options {
-	//	Print name and description of planet
-	//}
+	var planetInput string
+	fmt.Scanln(&planetInput)
+	for i := 0; i < len(data.Planets); i++ {
+		if planetInput == data.Planets[i].Name {
+			fmt.Println(planetInput)
+			fmt.Println(data.Planets[i].Description)
+		} else {
+			fmt.Println("Sorry, I don't know that planet...")
+			break
+		}
+	}
 
 	fmt.Print("\n")
 }
