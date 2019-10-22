@@ -50,7 +50,7 @@ func main() {
 
 	for {
 		if randPlanet == "Y" {
-			break
+			fmt.Print("PLACEHOLDER RANDOM PLANET")
 		} else if randPlanet == "N" {
 			break
 		} else if randPlanet != "Y" {
@@ -62,11 +62,6 @@ func main() {
 			fmt.Println("Would you like to hear about a random planet?")
 			fmt.Scanln(&randPlanet)
 		}
-	}
-
-	if randPlanet == "Y" {
-		//random planet here
-		fmt.Print("PLACEHOLDER RANDOM PLANET")
 	}
 
 	if randPlanet == "N" {
