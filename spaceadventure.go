@@ -5,6 +5,7 @@ import (
 	"os"
 	"encoding/json"
 	"io/ioutil"
+	"math/rand"
 )
 
 type Planets struct {
@@ -29,11 +30,6 @@ func main() {
 	var planets Planets
 	json.Unmarshal(byteValue, &planets)
 
-	for i := 0; i < len(planets.Planets); i++ {
-		fmt.Println("Planet Name: " + planets.Planets[i].name)
-		fmt.Println("Planet description: " + planets.Planets[i].description)
-	}
-
 	fmt.Println("Welcome to our quaint solar system!")
 	fmt.Println("There used to be 9 planets but now there are only 8...")
 	fmt.Println("...")
@@ -50,7 +46,10 @@ func main() {
 
 	for {
 		if randPlanet == "Y" {
-			fmt.Print("PLACEHOLDER RANDOM PLANET")
+			var randInt = rand.Intn(len(planets.Planets))
+			fmt.Println(randInt)
+			fmt.Println("Name: " + planets.Planets[randInt].name)
+			fmt.Println("Desc: " + planets.Planets[randInt].description)
 			break
 		} else if randPlanet == "N" {
 			break
