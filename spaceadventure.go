@@ -51,6 +51,7 @@ func main() {
 	for {
 		if randPlanet == "Y" {
 			fmt.Print("PLACEHOLDER RANDOM PLANET")
+			break
 		} else if randPlanet == "N" {
 			break
 		} else if randPlanet != "Y" {
