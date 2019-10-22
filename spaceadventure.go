@@ -6,8 +6,10 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"time"
+	"os"
 )
 
+//JSON Structs
 type Planets struct {
 	Planets []Planet `json: "planets"`
 }
@@ -18,12 +20,15 @@ type Planet struct {
 	Description string `json: "description"`
 }
 
+//Only function(I realize how ugly this looks but I felt too deep to reformat into indivindual functions. Will go back and fix
+//so that it's not as ugly)
 func main() {
 	file, _ := ioutil.ReadFile("planetarySystem.json")
 	data := Planets{}
 
 	_ = json.Unmarshal([]byte(file), &data)
 
+	//Ask for name and if user would like a random planet
 	fmt.Println("Welcome to our quaint solar system!")
 	fmt.Println("There used to be 9 planets but now there are only 8...")
 	fmt.Println("...")
@@ -38,6 +43,7 @@ func main() {
 	fmt.Println("Y or N")
 	fmt.Scanln(&randPlanet)
 
+	//take input Y or N
 	for {
 		if randPlanet == "Y" {
 			rand.Seed(time.Now().UnixNano())
@@ -45,7 +51,7 @@ func main() {
 			fmt.Println(randInt)
 			fmt.Println("Name: " + data.Planets[randInt].Name)
 			fmt.Println("Desc: " + data.Planets[randInt].Description)
-			break
+			os.Exit(3)
 		} else if randPlanet == "N" {
 			break
 		} else if randPlanet != "Y" {
@@ -59,21 +65,28 @@ func main() {
 		}
 	}
 
+	//handle input N
 	if randPlanet == "N" {
 		fmt.Println("Alright, then what planet would you like to hear about?")
 	}
-
 	var planetInput string
+	var planetFound bool
 	fmt.Scanln(&planetInput)
+
 	for i := 0; i < len(data.Planets); i++ {
 		if planetInput == data.Planets[i].Name {
 			fmt.Println(planetInput)
 			fmt.Println(data.Planets[i].Description)
-		} else {
-			fmt.Println("Sorry, I don't know that planet...")
-			break
+			planetFound = true
 		}
 	}
+
+	if planetFound != true {
+		fmt.Print("Sorry, I don't know that planet!")
+	}
+
+	//program doesn't ask again if input doesn't match acutal planet. Need to reformat when I actually
+	//reformat into indivindual functions since that will make the implementation a lot less messy
 
 	fmt.Print("\n")
 }
