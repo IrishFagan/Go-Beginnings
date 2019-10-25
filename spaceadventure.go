@@ -9,19 +9,24 @@ import (
 	"os"
 )
 
+//Creates struct for Planets
 type Planet struct {
 	Name string `json: "name"`
 	Description string `json: "description"`
 }
 
+//Creates list of Planets containing their name and description
 type Planets struct {
 	Planets []Planet `json: "planets"`
 }
 
+//Calls conversation()
 func main() {
 	conversation()
 }
 
+//Used to retrieve name of the user, then calls handleInput while passing it
+//the names and descriptions of the planets
 func conversation() {	
 	file, _ := ioutil.ReadFile("planetarySystem.json")
 	p_data := Planets{}
@@ -40,13 +45,14 @@ func conversation() {
 	handleInput(p_data)
 }
 
+//Handles the input from the user of whether they would like to hear about a
+//random or specific planet
 func handleInput(p_data Planets) {
 	var randPlanet string
 	fmt.Println("Would you like to hear about a random planet?")
 	fmt.Println("Y or N")
 	fmt.Scanln(&randPlanet)
 
-	
 	if randPlanet == "Y" {
 		rand.Seed(time.Now().UnixNano())
 		var randInt = rand.Intn(len(p_data.Planets))
@@ -54,6 +60,7 @@ func handleInput(p_data Planets) {
 		fmt.Println("Desc: " + p_data.Planets[randInt].Description)
 		os.Exit(3)
 	} else if randPlanet == "N" {
+		fmt.Println("Alright, what planet would you like to hear about then?")
 		specificPlanet(p_data)
 	} else if randPlanet != "Y" {
 		handleInput(p_data)
@@ -62,11 +69,11 @@ func handleInput(p_data Planets) {
 	}
 }
 
+//Handles the input of a specific planet from the user
 func specificPlanet(p_data Planets) {
 	var planetInput string
 	var planetFound bool
 	
-	fmt.Println("Alright, then what planet would you like to hear about?")
 	fmt.Scanln(&planetInput)
 
 	for i := 0; i < len(p_data.Planets); i++ {
@@ -78,7 +85,8 @@ func specificPlanet(p_data Planets) {
 	}
 
 	if planetFound != true {
-		fmt.Print("Sorry, I don't know that planet!")
+		fmt.Println("Sorry, I don't know that planet!")
+		fmt.Println("Again, what planet would you like to hear about?")
 		specificPlanet(p_data)
 	}
 }
